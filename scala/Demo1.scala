@@ -1,5 +1,6 @@
 import java.io.IOException
-
+//Author: Hanjie Yang
+//Date: 02/25/2019
 object Demo1 extends App {
   def sayHello(name: String) = "Hello, " + name
   println(sayHello("Jerry"))
