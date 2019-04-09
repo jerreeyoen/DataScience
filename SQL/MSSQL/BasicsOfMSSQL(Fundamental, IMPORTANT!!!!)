@@ -1,1 +1,66 @@
 
+#Data Life Cycle,
+Normall, data comes from application and store in a OLTP database. Then, via ETL it will be stored in dataware house which is OLAP design. 
+Then it will be used for data mining to get analysis or used by BI to generating reports.
+
+#SQL Server Architecture:
+SQL server is a server that holds many instance. A server are normally place at local or on cloud.
+An instance of the Database Engine is a copy of the sqlservr.exe executable that runs as an operating system service. Application connects to 
+instance, not databases. There is 2 types of instances, named and default instances. In default instance, you just need to connect to the server
+while named instance connection required specific instance name, such as server1/instance1.   
+A instance can have multiple databases, but they shared same system dataases. databases includes:   
+master: holds instance -wide metadata info, server configuration, and info about all databases.   
+Resource:  a databases that holds all system objects, read-only
+model: a databases that you can create objects, or properties configuration for new databases. Note: existing database won't be affected if you 
+you change model database   
+tempdb: hwere it store temp data.
+msdb: store SQL server agent data such as jobs, schedules and alerts.   
+
+#data file: a user database contains logs and data file in fileGroup, there is at least 1 primary file group and the extention of primary file is mdf
+mdfcontains primary dta file and database's system catalog. You may have secondary file group, which has extention of ndf(not master data file)
+and log has extention of ldf.
+
+#Schemas: it's virtual to help you organize your objects such as tables, views.
+
+
+#How query is excuted
+many of us may had concerned how query is read by the system. so here is the order:
+1.FROM
+2.Where
+3.Group by
+4.HAVING
+5.SELECT
+6.ORDER BY
+understanding how a query is excuted will help you to write queries. Now, you may know why some alias create in SELECT and used in HWERE will give 
+syntax error.
+
+#WHERE
+In terms of performance, if you use where, it's have better performance because where clause will filter out some rows you don't want
+There is no need do a full table scan.
+
+#GROUP BY 
+emelents not in GROUP BY must use aggregate function.
+
+#ORDER BY
+it's a cursor, may be harmful for performance, especially on large data query.
+
+#NULL
+count(*) is the only aggregation that count null value. note count(col1) won't count null value.
+in DDL, the comparison are accept true, so if a statement is null then won't be accept.
+In DML, CHECK constraints reject fall, so null will be accepted.
+
+#ALL-at-Once Operations
+If you have experience, SQL server excute query based on cost based. in SELECT, all columns are read at once. any col can't use alias created 
+in the same phase.
+ex: select Year(orderdate) as orderyear, orderyear + 1 as next year. Will give error.
+
+#TOP VS OFFSET-FETCH
+these 2 command are popular on reporting or testing.
+top allows percent (round up) and with ties and it doesn't need order by.
+OFFSET-FETCH needs order by, OFFSET clause is required while FETCH is optional.
+
+#Predicates
+nvarchar is unicode, each char is 2 bytes where varchar is regular, each char is 1 byte.
+nvarchar supprots many languages but varchar only support english + another languages(you pick)
+varchar has variable length, many varchar are lass than it's declared length so it takes less time to scan, but insert may cause out of page, so slower for insert.
+
