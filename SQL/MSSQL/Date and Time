@@ -1,0 +1,44 @@
+When working with time, there is 5 things you may keep in mind.
+default date, default time, accuracy of data type, Offset(time zone), language
+If you don't specify date, it's 19000101
+If you don't specify time, it's 00:00:00:000
+accuracy differ from data type.
+language is better to dis play with example:
+  SET LANGUAGE British;
+  Select CAST('06/11/2018' AS DATETIME);
+
+  SET LANGUAGE us_english;
+  Select CAST('06/11/2018' AS DATETIME);
+  
+If you have index on datetimme, don't modify the column becasue it will ignore the index. 
+For example, if you want something from year 2018, it's better to say between 20180101 and 20181231 than year(2018)
+
+CAST, CONVERT PARSE
+SET LANGUAGE British;
+Select CAST('06/11/2018' AS DATETIME);
+
+SET LANGUAGE us_english;
+Select CAST('06/11/2018' AS DATETIME);
+
+SELECT CONVERT(DATETIME, '06/11/2018', 101);
+SELECT CONVERT(DATETIME, '06/11/2018', 103);
+
+SELECT PARSE('06/11/2018' AS DATETIME USING 'en-US');
+SELECT PARSE('06/11/2018' AS DATETIME USING 'en-GB');
+
+
+#Get Current Date
+SELECT
+GETDATE() AS [GETDATE],
+CURRENT_TIMESTAMP AS [CURRENT_TIMESTAMP],
+GETUTCDATE() AS [GETUTCDATE],
+SYSDATETIME() AS [SYSDATETIME],
+SYSUTCDATETIME() AS [SYSUTCDATETIME],
+SYSDATETIMEOFFSET() AS [SYSDATETIMEOFFSET];
+
+
+#change to timezone
+SELECT SWITCHOFFSET(CURRENT_TIMESTAMP, '-05:00')
+
+datetime calculatoin:
+DATEADD, DATEDIFF, DATENAME, EOMONTH
