@@ -1,0 +1,20 @@
+when you need to determine a cell's value based on conditions. you have following options.
+Return first none null value:
+  coalesce
+Return value if the field is null:
+  isnull
+return specific column
+  Choose(col index, col1, col2, col3...)
+return value base on binary result.
+  IIF
+return value based on multiple possibility:
+  CASE col
+  WHEN <condition1> THEN xyz,
+  WHEN <condition2> THEN xyz2,
+  .
+  .
+  .
+  ELSE 'abc'
+  END as alias
+  
+Ex:
