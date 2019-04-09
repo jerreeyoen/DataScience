@@ -18,3 +18,23 @@ return value based on multiple possibility:
   END as alias
   
 Ex:
+return product over price 100 as high quality, 30-10 as medium quality and <30 as low quality otherwise unknown.
+use AdventureWorks2016;
+go
+select PurchaseOrderDetailID, ProductID, UnitPrice,
+	CASE 
+		WHEN UnitPrice > 100				THEN 'HIGH Quality'
+		WHEN UnitPrice between 30 and 100   THEN 'Medium Quality'
+		WHEN UnitPrice <30					THEN 'Low Quality'
+		else 'Unknown'
+	END AS quality
+from Purchasing.PurchaseOrderDetail
+
+---return product over 100 as good quality otherwise poor.
+select PurchaseOrderDetailID, ProductID, UnitPrice,
+	IIF(UnitPrice >100, 'good', 'poor') as quality
+from Purchasing.PurchaseOrderDetail
+
+--- return 3rd column in choose: 
+select CHOOSE(3,PurchaseOrderDetailID, ProductID, UnitPrice)
+from Purchasing.PurchaseOrderDetail
