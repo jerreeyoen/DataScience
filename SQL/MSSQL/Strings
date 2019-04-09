@@ -1,0 +1,57 @@
+String handeling is a big part of getting ideal queries. here are some functions to handle Strings.
+Concatention:
++ and CONCAT
+ex:
+SELECT 'abc' + 'bcd' AS test, CONCAT('abc','bcd') AS test2
+
+get range of char you like.
+SUBSTRING, LEFT, RIGHT
+
+cases convertion:
+LOWER, UPPER
+
+spaces handling:
+LTRIM, RTRIM
+
+size:
+LEN
+
+CHARINDEX
+index of first occurance of substring
+ex:
+select CHARINDEX('bcd', 'abcdefgbcd'), CHARINDEX('bcd', 'abcdefgbcd',3)
+
+PARTINDEX
+similar to charindex, but it return the position of first occrance that match the pattern.
+
+ex:
+SELECT  patindex('%[0-3]%', 'ABC942asdf')
+
+
+REPLACE:
+replace all matched substring 1 by substring 2.
+use to calculate the number of occurance of substring1:
+
+ex:
+find the number of a of person.person's last name.
+use AdventureWorks2016;
+go
+SELECT lastName, LEN(lastName) - LEN(REPLACE(lastname, 'a', '')) as aoccur 
+FROM Person.Person
+
+REPLICATE 
+replicates a string a requested number of times
+useful for formatting
+use AdventureWorks2016;
+go
+SELECT BusinessEntityID, RIGHT(REPLICATE('0',9) + CAST(BusinessEntityID as varchar(10)),10) as formattedid
+FROM Person.Person
+
+
+STUFF:
+similar to replace, but specific start position index and length.
+SELECT STUFF('abcdefg', 3, 2,'testtest')
+
+Like:
+[^char or range] means not in the char list or range
+use ! as escape character.
