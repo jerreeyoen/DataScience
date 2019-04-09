@@ -22,6 +22,10 @@ and log has extention of ldf.
 
 #Schemas: it's virtual to help you organize your objects such as tables, views.
 
+#Collation
+it's important because fail to realize the collation rule may cause logic error. you can see detail collation rule at
+select name, description
+from sys.fn_helpcollations()
 
 #How query is excuted
 many of us may had concerned how query is read by the system. so here is the order:
