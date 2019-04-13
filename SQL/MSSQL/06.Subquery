@@ -30,3 +30,4 @@ From Sales.Customer as C LEFT JOIN Sales.SalesOrderHeader as SH on C.CustomerID 
 WHERE SalesOrderID NOT in ('43698', NULL)
 
 
+#using Subquery for an example
