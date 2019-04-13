@@ -69,6 +69,6 @@ Let's do a query to return customers with orders placed on the first day of 2012
 
 Select c.CustomerID, SH.OrderDate, SH.SalesOrderID
 From Sales.Customer as C LEFT JOIN Sales.SalesOrderHeader as SH on C.CustomerID = SH.CustomerID and SH.OrderDate = '20120101'
-This is the optimal query I can have, I also attached the excution plan here ![](DataScience/SQL/MSSQL/Figure1.png)
+This is the optimal query I can have, I also attached the excution plan here ![](https://raw.github.com/jerreeyoen/DataScience/SQL/MSSQL/Figure1.png)
 
 
