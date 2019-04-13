@@ -1,1 +1,52 @@
+#Table of Numbers
+table of Numbers will be a good helper table for queries, Here is the script to create of table
+USE AdventureWorks2016
+If OBJECT_ID('dbo.Digits','U') IS NOT NULL DROP TABLE dbo.Digits
+CREATE TABLE dbo.Digits(digit INT NOT NULL PRIMARY KEY)
 
+INSERT INTO dbo.Digits(digit)
+VALUES (0),(1),(2),(3),(4),(5),(6),(7),(8),(9);
+
+SELECT digit FROM dbo.Digits;
+
+
+Further, you can create a list of number using self cross join
+
+#Non-Equi Joins
+Most of time, We use Equi join, but T-SQL has Non-equi join. Thus, don't restrict your mind on equi join. Non-Equi joins will be helpful to 
+create unique of pairs
+
+Ex:
+Select SP1.BusinessEntityID, SP2.BusinessEntityID
+FROM Sales.SalesPerson AS SP1 Join Sales.SalesPerson AS SP2 
+ON SP1.BusinessEntityID < SP2.BusinessEntityID
+
+
+#multi_join
+There is only one thing to keep in mind: all joins get the result of preceding join as their left input.
+
+#Outer Join
+Outer joins apply 3 phases logical process
+1. Cartesian product
+2. On Filter of Inner join
+3. Adding preserved Rows back to the result.
+
+When using the result of Outter join, It's very important to understand the null values. Since it may be NULL in the nonpreserved table before join
+or it could be NULL value added as a result of outter join.
+
+Null value will be helpful, For example, if you want to find days that don't have order in year 2012. Here is a solution
+IF OBJECT_ID('Nums','u') IS NOT NULL DROP TABLE Nums
+CREATE TABLE Nums(n INT)
+INSERT INTO Nums 
+SELECT D3.digit * 100 + D2.digit * 10 + d1.digit +1
+FROM dbo.Digits as D1 Cross Join dbo.Digits as D2 Cross Join dbo.Digits as D3 
+
+
+
+SELECT DATEADD(day, n-1, '20120101') AS TargetDate, SH.PurchaseOrderNumber, SH.CustomerID
+From Nums Left Join Sales.SalesOrderHeader as SH ON DATEADD(day, n-1, '20120101') = SH.OrderDate
+WHERE N <= DATEDIFF(day, '20120101', '20121231')+1
+ORDER BY TargetDate
+
+if you take a look at the result, you will discover some row of PurchaseOrderNumber is NULL, since it's NULL in the SalesOrderHeader. However
+there is order for that day, which is indicate by customerID, A NOT NULL column.
