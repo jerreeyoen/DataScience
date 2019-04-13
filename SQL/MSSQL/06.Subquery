@@ -1,0 +1,32 @@
+#Self_contained Subqueries
+a subqueries that is independent from the outter query, Normally used for where Clause of Outter query.
+
+#Correlated Subqueires
+a subqueires that is dependent from the outter query
+
+Ex: to get the last order of each customer
+Select c.CustomerID, SH.OrderDate, SH.SalesOrderID
+From Sales.Customer as C LEFT JOIN Sales.SalesOrderHeader as SH on C.CustomerID = SH.CustomerID 
+WHERE Sh.OrderDate = (
+SELECT MAX(SH1.orderdate)
+from Sales.SalesOrderHeader as SH1
+WHERE SH.CustomerID = SH1.CustomerID)
+
+#Subqueires VS Join
+In terms of performance, there is no much different. So, pick the one that is more readable. It very dependents on the Query.
+
+
+#IN VS EXIST
+in has bad performance, so unless you have to use it avoid it. It process like WHERE A=con1 or A= con2 or A = con3...
+Exist is much faster, it evaluate if the subqueries has at least one row. So, if the subquery return a row, despite there is much more row could 
+be returned, it will stop the subquery.
+
+Another bad thing in IN is that if the subquery returns a NULL value, and you use NOT IN CLAUSE because when it evaluate to the NULL value, 
+the predicate is unknown, and the NOT gives UNKNOWN, so it returns nothing.
+
+Ex:
+Select c.CustomerID, SH.OrderDate, SH.SalesOrderID
+From Sales.Customer as C LEFT JOIN Sales.SalesOrderHeader as SH on C.CustomerID = SH.CustomerID 
+WHERE SalesOrderID NOT in ('43698', NULL)
+
+
