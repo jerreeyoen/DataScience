@@ -50,3 +50,22 @@ ORDER BY TargetDate
 
 if you take a look at the result, you will discover some row of PurchaseOrderNumber is NULL, since it's NULL in the SalesOrderHeader. However
 there is order for that day, which is indicate by customerID, A NOT NULL column.
+
+#WHERE CLAUSE IN OUTER JOIN
+it's worth to think twice if you have outter join and WHERE in the query. The HWERE clause may filtered your null row out. Take previous query 
+as example.
+
+SELECT DATEADD(day, n-1, '20120101') AS TargetDate, SH.PurchaseOrderNumber, SH.CustomerID
+From Nums Left Join Sales.SalesOrderHeader as SH ON DATEADD(day, n-1, '20120101') = SH.OrderDate
+WHERE N <= DATEDIFF(day, '20120101', '20121231')+1 and LEN(SH.PurchaseOrderNumber)>1
+ORDER BY TargetDate
+
+If you are expecting 3915 rows as the first query return, but you only get 1172 rows now. The where clause filtered out rows that contains null value.
+Since where predicate filter out null values.
+
+
+###Examples:
+Let's do a query to return customers with orders placed on the first day of 2012 and those didn't place orders on the first day of 2012
+
+Select c.CustomerID, SH.OrderDate, SH.SalesOrderID
+From Sales.Customer as C LEFT JOIN Sales.SalesOrderHeader as SH on C.CustomerID = SH.CustomerID and SH.OrderDate = '20120101'
